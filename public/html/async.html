@@ -23,32 +23,19 @@
 		});
 	}
 
-	sum([1, 2, 3, 4, 5])
-	.then((r) => {
-		console.log(r);
-		return multi(String(r));
-	})
-	.then((r) => {
-		console.log(r);
-		return exp(r);
-	})
-	.then((r) => {
-		console.log(r);
-	})
-	.catch((err) => {
-		console.log(err);
-	});
 
-
-	/*
-	$.get('/json/city.json').then(onLoad).catch(onErr);
-
-	function onLoad(v) {
-
+	async function calc() {
+		try {
+			const arr = [1, 2, 3, 4, 5];
+			const r = await sum([...arr]);
+			const r2 = await multi(r);
+			const r3 = await exp(r2);
+			console.log(r, r2, r3);
+		}
+		catch(e) {
+			console.log(e);
+		}
 	}
 
-	function onErr(e) {
-
-	}
-	*/
+	calc();
 </script>
