@@ -1,0 +1,50 @@
+<script>
+	function sum(arr, cb) {
+		let result = 0;
+		for(let i in arr) {
+			result += arr[i];
+		}
+		setTimeout(function() {
+			cb(result);
+		}, 0);
+	}
+
+	function multi(num, cb) {
+		setTimeout(function(){
+			cb(num * num);
+		}, 0);
+	}
+
+	function exp(value, cb) {
+		setTimeout(function(){
+			cb('값은 '+value+' 입니다.');
+		}, 0);
+	}
+
+	const hap = sum([1, 2, 3, 4, 5], function(r){
+		console.log( r );
+		multi(r, function(r2){
+			console.log( r2 );
+			exp(r2, function(s){
+				console.log( s );
+			});
+		});
+	});
+
+	function animate(sec, cb){
+		setTimeout(function() {
+			cb();
+		}, sec);
+	}
+
+	animate(3000, function(){
+		console.log("3초뒤 실행");
+	});
+
+
+	$.get('/json/test.json', function(r) {
+		$.get('/json/sample.js', {data: r.url}, function(r2) {
+
+		});
+	});
+</script>

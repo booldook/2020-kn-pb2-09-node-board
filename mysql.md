@@ -14,4 +14,7 @@
 ### 나. 컬렉션(Collection)들이 모여서 데이터베이스가 된다.
 ### 다. json형태의 document(데이터)들의 모여서 컬렉션이 된다.
 ### 라. Database > Collection > Document
-### 마. 대표적인 프로그램으로 MongoDB, OrientDB 있다.
+### 마. 대표적인 프로그램으로 MongoDB, Redis, OrientDB 있다.
+
+## 3. 설치
+### [bitnami.com](https://bitnami.com)에서 **WAMP**를 검색하여 다운로드한다.

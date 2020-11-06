@@ -1,0 +1,32 @@
+<script>
+	function sum(arr) {
+		return new Promise((resolve, reject) => {
+			let result = 0;
+			if(typeof arr === 'object') {
+				for(var i in arr) result += arr[i];
+				resolve(result); 
+			}
+			else reject('배열만 계산할 수 있습니다.');
+		});
+	}
+
+	sum('[1, 2, 3, 4, 5]')
+	.then((r) => {
+		console.log(r);
+	}).catch((err) => {
+		console.log(err);
+	});
+
+
+	/*
+	$.get('/json/city.json').then(onLoad).catch(onErr);
+
+	function onLoad(v) {
+
+	}
+
+	function onErr(e) {
+
+	}
+	*/
+</script>
