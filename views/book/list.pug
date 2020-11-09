@@ -1,6 +1,6 @@
 extends ../layout/lo-default.pug
 block content
-	table.table.table-hover.text-center
+	table.table.table-hover.text-center.list-table
 		thead.thead-dark
 			tr
 				th 번호
@@ -9,9 +9,10 @@ block content
 				th 발행일
 				th 내용
 		tbody
-			tr
-				td 1
-				td.text-left 홍길동전
-				td 홍길동
-				td 1450-01-11
-				td.text-left 아버지를 아버지라...
+			each v in lists
+				tr
+					td= v.id
+					td.text-left= v.title
+					td= v.writer
+					td= v.wdate
+					td.text-left= v.content

@@ -32,6 +32,7 @@ app.use('/', express.static(path.join(__dirname, './public')));
 
 app.get('/book/list', (req, res) => {
 	connection.query('SELECT * FROM books', function(err, r) {
+		for(let v of r) v.wdate = moment(v.wdate).format('YYYY-MM-DD');
 		const pug = {
 			css: 'book-list',
 			js: 'book-list',
@@ -40,5 +41,6 @@ app.get('/book/list', (req, res) => {
 			lists: r
 		}
 		res.render('book/list', pug);
+		console.log(r);
 	});
 });
