@@ -32,6 +32,6 @@ app.use('/', express.static(path.join(__dirname, './public')));
 
 app.get('/book/list', (req, res) => {
 	connection.query('SELECT * FROM books', function(err, r) {
-		res.json(r);
+		res.render('book/list');
 	});
 });
