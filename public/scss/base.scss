@@ -1,0 +1,45 @@
+@use './color.scss';
+
+html, body {
+	color: color.$defColor;
+	font-size: 16px;
+}
+
+ul, li, p, div, form, h1, h2, h3, h4, h5, header, footer, section, aside, article, nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+a:link, a:visited, a:active, a:hover {
+	color: inherit;
+}
+
+header.header-wrapper {
+	user-select: none;
+	background-color: color.$defColor;
+	display: flex;
+	color: color.$activeColor;
+	align-items: center;
+	justify-content: space-between;
+	.logo {
+		padding: 1em;
+	}
+	.navi-wrapper {
+		display: flex;
+		align-items: center;
+		.navi {
+			padding: 1em;
+		}
+	}
+}
+
+.title-bar {
+	margin: 1em auto;
+	small {
+		color: color.$lightColor;
+		margin-left: 1em;
+	}
+}
+
+

@@ -32,6 +32,13 @@ app.use('/', express.static(path.join(__dirname, './public')));
 
 app.get('/book/list', (req, res) => {
 	connection.query('SELECT * FROM books', function(err, r) {
-		res.render('book/list');
+		const pug = {
+			css: 'book-list',
+			js: 'book-list',
+			title: '도서 리스트',
+			titleSub: '고전도서 리스트',
+			lists: r
+		}
+		res.render('book/list', pug);
 	});
 });
