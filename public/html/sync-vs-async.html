@@ -1,0 +1,31 @@
+<script>
+	function sum(num, cb) {
+		for(var i=0, sum=0; i<num; i++) {
+			sum += i;
+		}
+		setTimeout(function(){
+			cb(sum);
+		}, 0);
+	}
+
+	sum(1000000000, function(v){
+		console.log(v);
+	})
+	console.log("hi~");
+
+
+	function first() {
+		second();
+		console.log("first");
+	}
+
+	function second() {
+		third();
+		console.log("second");
+	}
+
+	function third() {
+		console.log("third");
+	}
+	first();
+</script>
