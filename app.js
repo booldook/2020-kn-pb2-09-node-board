@@ -6,6 +6,7 @@ const path = require('path');
 /** 라우터 등록 **********************/
 const testRouter = require('./routes/test');
 const bookRouter = require('./routes/book');
+const errorRouter = require('./routes/error');
 
 /** 서버실행 **********************/
 app.listen(3000, () => {
@@ -27,4 +28,15 @@ app.use(express.urlencoded({extended: false}));
 app.use('/', express.static(path.join(__dirname, './public')));
 app.use('/test', testRouter);
 app.use('/book', bookRouter);
+
+/** 에러 처리 **********************/
+app.use(errorRouter);
+app.use((err, req, res, next) => {
+	const pug = {
+		src : err.src ? err.src : 500,
+		code : err.code ? err.code : 'UNEXPECTED ERROR',
+		msg: err.msg ? err.msg: '예기치 않은 에러가 발생하였습니다.'
+	}
+	res.render('error/error.pug', pug);
+});
 

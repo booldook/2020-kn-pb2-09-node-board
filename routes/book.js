@@ -3,25 +3,35 @@ const router = express.Router();
 const moment = require('moment');
 const { pool } = require('../modules/mysql-conn');
 
-router.get(['/', '/list'], async (req, res) => {
-	var sql = 'SELECT * FROM books ORDER BY id DESC LIMIT 0, 5';
+router.get(['/', '/list'], async (req, res, next) => {
+	let sql = 'SELEC * FROM books ORDER BY id DESC LIMIT 0, 5';
+	let connect, r;
+	try {
+		connect = await pool.getConnection();
+		r = await connect.query(sql);
+		connect.release();
 
-	const connect = await pool.getConnection();
-	const r = await connect.query(sql);
-	connect.release();
-
-	for(let v of r[0]) v.wdate = moment(v.wdate).format('YYYY-MM-DD');
-	const pug = {
-		file: 'book-list',
-		title: '도서 리스트',
-		titleSub: '고전도서 리스트',
-		lists: r[0]
+		for(let v of r[0]) v.wdate = moment(v.wdate).format('YYYY-MM-DD');
+		const pug = {
+			file: 'book-list',
+			title: '도서 리스트',
+			titleSub: '고전도서 리스트',
+			lists: r[0]
+		}
+		res.render('book/list', pug);
 	}
-
-	res.render('book/list', pug);
+	catch(e) {
+		connect.release();
+		e.msg = `
+		${e.code ? e.code : ''}\n
+		${e.errno ? e.errno : ''}\n
+		${e.sqlState ? e.sqlState : ''}\n
+		${e.sqlMessage ? e.sqlMessage : ''}`;
+		next(e);
+	}
 });
 
-router.get('/write', (req, res) => {
+router.get('/write', (req, res, next) => {
 	const pug = {
 		file: 'book-write',
 		title: '도서 작성',
@@ -30,7 +40,7 @@ router.get('/write', (req, res) => {
 	res.render('book/write', pug);
 });
 
-router.post('/save', async (req, res) => {
+router.post('/save', async (req, res, next) => {
 	const { title, writer, wdate, content } = req.body;
 	const values = [title, writer, wdate, content];
 	const sql = 'INSERT INTO books SET title=?, writer=?, wdate=?, content=?';
