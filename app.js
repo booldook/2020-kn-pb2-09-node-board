@@ -33,9 +33,9 @@ app.use('/book', bookRouter);
 app.use(errorRouter);
 app.use((err, req, res, next) => {
 	const pug = {
-		src : err.src ? err.src : 500,
-		code : err.code ? err.code : 'UNEXPECTED ERROR',
-		msg: err.msg ? err.msg: '예기치 않은 에러가 발생하였습니다.'
+		img : err.img ? err.img : 500,
+		code : err.code ? err.code : 'Unexprected Error',
+		msg: err.error ? err.error: err
 	}
 	res.render('error/error.pug', pug);
 });
