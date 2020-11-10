@@ -1,0 +1,17 @@
+extends ../layout/lo-minimal.pug
+
+block style
+	link(rel="stylesheet" href="/css/error.css")
+
+block content
+	.wrapper
+			.wrap
+				div
+					.img-wrap
+						img.w-100(src=`/img/${code ? code : '500'}.png` alt="에러")
+					.code-wrap
+						h3= `ERROR ${code ? code : '500'}.`
+				hr
+				.error-wrap= `${error ? error : '예기치 않은 오류가 발생하였습니다.'}`
+				.text-center
+					a.btn.btn-primary(href="/") 메인페이지로 돌아가기

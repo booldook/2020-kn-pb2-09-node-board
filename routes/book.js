@@ -3,7 +3,7 @@ const router = express.Router();
 const moment = require('moment');
 const { pool } = require('../modules/mysql-conn');
 
-router.get('/list', async (req, res) => {
+router.get(['/', '/list'], async (req, res) => {
 	var sql = 'SELECT * FROM books ORDER BY id DESC LIMIT 0, 5';
 
 	const connect = await pool.getConnection();
