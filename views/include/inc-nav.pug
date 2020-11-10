@@ -1,7 +1,15 @@
 .navi-wrapper
 	.navi
 		a(href="/") HOME
-	.navi
-		a(href="/book/list") BOOK List
-	.navi
-		a(href="/book/write") BOOK Write
+	if file == 'book-list'
+		.navi.active
+			a(href="/book/list") BOOK List
+	else
+		.navi
+			a(href="/book/list") BOOK List
+	if file == 'book-write'
+		.navi.active
+			a(href="/book/write") BOOK Write
+	else
+		.navi
+			a(href="/book/write") BOOK Write

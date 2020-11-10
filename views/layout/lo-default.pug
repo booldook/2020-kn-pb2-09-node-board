@@ -4,7 +4,7 @@ html(lang="ko")
 		meta(charset="UTF-8")
 		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		include ../include/inc-style.pug
-		link(rel="stylesheet" href=`/css/${css ? css : 'index'}.css`)
+		link(rel="stylesheet" href=`/css/${file ? file : 'index'}.css`)
 		include ../include/inc-script.pug
 	body
 		header.header-wrapper
@@ -13,4 +13,4 @@ html(lang="ko")
 		.container
 			include ../include/inc-titlebar.pug
 			block content
-		script(src=`/js/${js ? js : 'index'}.js`)
+		script(src=`/js/${file ? file : 'index'}.js`)

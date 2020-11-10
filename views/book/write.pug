@@ -1,0 +1,25 @@
+extends ../layout/lo-default.pug
+block content
+	form(name="bookForm" action="/book/save" method="post")
+		table.table.tb-write
+			tbody
+				tr
+					td.title 제목
+					td.content
+						input.form-control(type="text" name="title" placeholder="제목을 입력하세요.")
+				tr
+					td.title 저자
+					td.content
+						input.form-control(type="text" name="writer" placeholder="저자를 입력하세요.")
+				tr
+					td.title 발행일
+					td.content
+						input.form-control(type="date" name="wdate")
+				tr
+					td.title 내용
+					td.content
+						textarea.form-control(name="content" placeholder="내용을 입력하세요.")
+		hr
+		.text-center
+			button.btn.btn-primary 등록
+			button.btn.btn-danger(type="reset") 다시작성

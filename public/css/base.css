@@ -31,6 +31,9 @@ header.header-wrapper .navi-wrapper {
 header.header-wrapper .navi-wrapper .navi {
   padding: 1em;
 }
+header.header-wrapper .navi-wrapper .navi.active {
+  background-color: #661e1e;
+}
 
 .title-bar {
   margin: 1em auto;

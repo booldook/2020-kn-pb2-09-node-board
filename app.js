@@ -32,8 +32,7 @@ app.get('/book/list', async (req, res) => {
 
 	for(let v of r[0]) v.wdate = moment(v.wdate).format('YYYY-MM-DD');
 	const pug = {
-		css: 'book-list',
-		js: 'book-list',
+		file: 'book-list',
 		title: '도서 리스트',
 		titleSub: '고전도서 리스트',
 		lists: r[0]
@@ -44,8 +43,7 @@ app.get('/book/list', async (req, res) => {
 
 app.get('/book/write', (req, res) => {
 	const pug = {
-		css: 'book-write',
-		js: 'book-write',
+		file: 'book-write',
 		title: '도서 작성',
 		titleSub: '등록할 도서를 작성하세요.',
 	}

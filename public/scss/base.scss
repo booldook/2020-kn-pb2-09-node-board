@@ -32,6 +32,9 @@ header.header-wrapper {
 		.navi {
 			padding: 1em;
 		}
+		.navi.active {
+			background-color: color.$selBg;
+		}
 	}
 }
 

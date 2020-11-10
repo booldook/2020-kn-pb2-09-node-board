@@ -1,0 +1,7 @@
+.tb-write .title {
+  border-bottom: 2px solid #f8b4b4;
+  font-weight: bold;
+}
+.tb-write textarea {
+  height: 150px;
+}

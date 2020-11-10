@@ -2,4 +2,7 @@
 	h1= `${title ? title : '...'}`
 		small= `${titleSub ? titleSub : '...'}`
 	hr
-	a.btn.btn-primary(href="/book/write") 도서작성
+	if file == 'book-list'
+		a.btn.btn-primary(href="/book/write") 도서등록
+	if file == 'book-write'
+		a.btn.btn-info(href="/book/list") 도서리스트
