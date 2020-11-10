@@ -1,5 +1,5 @@
 <script>
-	function sum(num, cb) {
+	/* function sum(num, cb) {
 		for(var i=0, sum=0; i<num; i++) {
 			sum += i;
 		}
@@ -11,7 +11,7 @@
 	sum(1000000000, function(v){
 		console.log(v);
 	})
-	console.log("hi~");
+	console.log("hi~"); */
 
 
 	function first() {
@@ -28,4 +28,12 @@
 		console.log("third");
 	}
 	first();
+
+	console.clear();
+
+	console.log("hi~");
+	setTimeout(function(){
+		console.log("hi~ timeout");
+	}, 5);
+	console.log("hi2~");
 </script>
