@@ -11,9 +11,10 @@ ul, li, p, div, form, h1, h2, h3, h4, h5, header, footer, section, aside, articl
 	padding: 0;
 }
 
-a:link, a:visited, a:active, a:hover {
+a:link:not(.btn), a:visited:not(.btn), a:active:not(.btn), a:hover:not(.btn) {
 	color: inherit;
 }
+
 
 header.header-wrapper {
 	user-select: none;

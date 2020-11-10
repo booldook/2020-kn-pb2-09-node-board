@@ -2,18 +2,8 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const mysql = require('mysql2/promise');
 const moment = require('moment');
-const pool = mysql.createPool({
-	host: '127.0.0.1',
-	port: 3306,
-	user: 'booldook',
-	password: '000000',
-	database: 'booldook',
-	waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+const { pool } = require('./modules/mysql-conn');
 
 /** 서버실행 **********************/
 app.listen(3000, () => {
@@ -34,9 +24,12 @@ app.use(express.urlencoded({extended: false}));
 app.use('/', express.static(path.join(__dirname, './public')));
 
 app.get('/book/list', async (req, res) => {
+	var sql = 'SELECT * FROM books ORDER BY id DESC LIMIT 0, 5';
+
 	const connect = await pool.getConnection();
-	const r = await connect.query('SELECT * FROM books');
+	const r = await connect.query(sql);
 	connect.release();
+
 	for(let v of r[0]) v.wdate = moment(v.wdate).format('YYYY-MM-DD');
 	const pug = {
 		css: 'book-list',
@@ -45,8 +38,20 @@ app.get('/book/list', async (req, res) => {
 		titleSub: '고전도서 리스트',
 		lists: r[0]
 	}
+
 	res.render('book/list', pug);
 });
+
+app.get('/book/write', (req, res) => {
+	const pug = {
+		css: 'book-write',
+		js: 'book-write',
+		title: '도서 작성',
+		titleSub: '등록할 도서를 작성하세요.',
+	}
+	res.render('book/write', pug);
+});
+
 
 /*
 app.get('/book/list', (req, res) => {
