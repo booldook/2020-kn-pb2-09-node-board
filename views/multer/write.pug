@@ -1,0 +1,10 @@
+extends ../layout/lo-minimal.pug
+block content
+	.container
+		.jumbotron.my-3
+			h1 파일업로드
+		form(method="post" action="/multer/save" enctype="multipart/form-data")
+			input.form-control.my-2(type="text" name="title" placeholder='제목을 입력하세요')
+			input.form-control-file.my-2(type="file" name="upfile" placeholder='첨부파일을 등록하세요')
+			hr
+			button.btn.btn-primary.my-2 저장

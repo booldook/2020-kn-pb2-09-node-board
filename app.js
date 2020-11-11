@@ -3,6 +3,9 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+const multer  = require('multer')
+const upload = multer({ dest: path.join(__dirname, './storage') });
+
 /** 라우터 등록 **********************/
 const testRouter = require('./routes/test');
 const bookRouter = require('./routes/book');
@@ -28,6 +31,15 @@ app.use(express.urlencoded({extended: false}));
 app.use('/', express.static(path.join(__dirname, './public')));
 app.use('/test', testRouter);
 app.use('/book', bookRouter);
+
+/** 멀터-임시 **********************/
+app.get('/multer', (req, res, next) => {
+	res.render('multer/write.pug');
+});
+
+app.post('/multer/save', upload.single('upfile'), (req, res, next) => {
+	res.json(req.body);
+});
 
 /** 에러 처리 **********************/
 app.use(errorRouter);
