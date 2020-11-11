@@ -1,14 +1,22 @@
 .list-table tr th:nth-child(1) {
   width: 10%;
+  min-width: 60px;
 }
 .list-table tr th:nth-child(2) {
   width: 20%;
+  min-width: 120px;
 }
 .list-table tr th:nth-child(3) {
   width: 12%;
+  min-width: 100px;
 }
 .list-table tr th:nth-child(4) {
   width: 12%;
+  min-width: 120px;
+}
+.list-table tr th:nth-child(6) {
+  width: 10%;
+  min-width: 70px;
 }
 @media screen and (max-width: 767px) {
   .list-table tr th:nth-child(1), .list-table tr th:nth-child(3), .list-table tr th:nth-child(4) {

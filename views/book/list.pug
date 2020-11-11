@@ -8,6 +8,7 @@ block content
 				th 저자
 				th 발행일
 				th 내용
+				th 관리
 		tbody
 			each v in lists
 				tr
@@ -16,3 +17,8 @@ block content
 					td= v.writer
 					td= v.wdate
 					td.text-left= v.content
+					td
+						a(href=`#`)
+							i.fa.fa-edit
+						a(href=`javascript: onDelete(${v.id});`).ml-2
+							i.fa.fa-trash-alt

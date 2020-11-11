@@ -1,4 +1,4 @@
-INSERT INTO books SET title = '구운몽전', writer = '운몽이', content = '꿈을 꾸었네...';
+INSERT INTO books SET title = '별주부전', writer = '거북이', content = '용왕이 나를...';
 -- UPDATE books SET title='별주부전', writer='거북이', content='죽다 살았네...' WHERE id=3;
 -- DELETE FROM books WHERE id=4;
 -- SELECT title, writer FROM books;

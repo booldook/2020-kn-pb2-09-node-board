@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 const { pool } = require('../modules/mysql-conn');
+const { alert } = require('../modules/util');
 
 router.get(['/', '/list'], async (req, res, next) => {
 	let sql = 'SELECT * FROM books ORDER BY id DESC LIMIT 0, 5';
@@ -47,6 +48,20 @@ router.post('/save', async (req, res, next) => {
 	res.redirect('/book/list');
 });
 
+// DELETE FROM books WHERE id=1 OR id=2 OR id=3;
+router.get('/delete/:id', async (req, res, next) => {
+	try {
+		var sql = `DELETE FROM books WHERE id=${req.params.id}`;
+		const connect = await pool.getConnection();
+		const rs = await connect.query(sql);
+		if(rs[0].affectedRows > 0) {
+			res.send(alert('삭제되었습니다.', '/book'));
+		}
+	}
+	catch(e) {
+		next(e);
+	}
+});
 
 module.exports = router;
 

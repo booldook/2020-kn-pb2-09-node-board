@@ -33,9 +33,9 @@ app.use('/book', bookRouter);
 app.use(errorRouter);
 app.use((err, req, res, next) => {
 	const pug = {
-		img : err.img ? err.img : 500,
-		code : err.code ? err.code : 'Unexprected Error',
-		msg: err.error ? err.error: err
+		img : err.img || 500,
+		code : err.code || 'Unexprected Error',
+		msg: err.error || err
 	}
 	res.render('error/error.pug', pug);
 });
