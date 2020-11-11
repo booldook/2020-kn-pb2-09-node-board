@@ -18,7 +18,7 @@ block content
 					td= v.wdate
 					td.text-left= v.content
 					td
-						a(href=`#`)
+						a(href=`javascript: onUpdate(${v.id});`)
 							i.fa.fa-edit
 						a(href=`javascript: onDelete(${v.id});`).ml-2
 							i.fa.fa-trash-alt

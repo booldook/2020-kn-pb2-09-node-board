@@ -3,3 +3,7 @@ function onDelete(id) {
 		location.href = '/book/delete/'+id;
 	}
 }
+
+function onUpdate(id) {
+	location.href = '/book/write/'+id;
+}

@@ -1,25 +1,32 @@
 extends ../layout/lo-default.pug
 block content
-	form(name="bookForm" action="/book/save" method="post")
+	form(name="bookForm" action=`${book ? '/book/change' : '/book/save'}` method="post")
+		input(type="hidden" name="id" value=`${book && book.id ? book.id : ''}`)
 		table.table.tb-write
 			tbody
 				tr
 					td.title 제목
 					td.content
-						input.form-control(type="text" name="title" placeholder="제목을 입력하세요.")
+						input.form-control(type="text" name="title" placeholder="제목을 입력하세요."
+						value=`${book && book.title ? book.title : ''}`)
 				tr
 					td.title 저자
 					td.content
-						input.form-control(type="text" name="writer" placeholder="저자를 입력하세요.")
+						input.form-control(type="text" name="writer" placeholder="저자를 입력하세요."
+						value=`${book && book.writer ? book.writer : ''}`)
 				tr
 					td.title 발행일
 					td.content
-						input.form-control(type="date" name="wdate")
+						input.form-control(type="date" name="wdate"
+						value=`${book && book.wdate ? book.wdate : ''}`)
 				tr
 					td.title 내용
 					td.content
-						textarea.form-control(name="content" placeholder="내용을 입력하세요.")
+						textarea.form-control(name="content" placeholder="내용을 입력하세요.")= `${book && book.content ? book.content : ''}`
 		hr
 		.text-center
-			button.btn.btn-primary 등록
+			if book
+				button.btn.btn-success 수정
+			else
+				button.btn.btn-primary 등록
 			button.btn.btn-danger(type="reset") 다시작성
