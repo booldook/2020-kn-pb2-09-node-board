@@ -22,10 +22,12 @@ const fileFilter = (req, file, cb) => {
 	let ext = path.extname(file.originalname).replace(".", "").toLowerCase();
 	if(allowExt.includes(ext)) {
 		req.allow = true;
+		req.ext = ext;
 		cb(null, true);
 	}
 	else {
 		req.allow = false;
+		req.ext = ext;
 		cb(null, false);
 	}
 }

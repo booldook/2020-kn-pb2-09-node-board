@@ -62,18 +62,29 @@ router.get('/write/:id', async (req, res, next) => {
 });
 
 router.post('/save', upload.single('upfile'), async (req, res, next) => {
-	console.log(req.allow);
 	let connect, rs, sql, values, pug;
+	let { title, writer, wdate, content } = req.body;
 	try {
-		const { title, writer, wdate, content } = req.body;
-		values = [title, writer, wdate, content];
-		sql = 'INSERT INTO books SET title=?, writer=?, wdate=?, content=?';
-	
-		connect = await pool.getConnection();
-		rs = await connect.query(sql, values);
-		connect.release();
-	
-		res.redirect('/book/list');
+		if(req.ext && !req.allow) {
+			// 파일을 올렸으나 거부당했을때..
+			res.send(alert(`${req.ext} 는 업로드 할 수 없습니다.`, '/book'));
+		}
+		else {
+			// 파일을 올리지 않았거나, 올렸거나
+			sql = 'INSERT INTO books SET title=?, writer=?, wdate=?, content=?';
+			values = [title, writer, wdate, content];
+			if(req.file) {
+				sql += ', realfile=?, savefile=?, filesize=?';
+				values.push(req.file.originalname);
+				values.push(req.file.filename);
+				values.push(req.file.size);
+			}
+			connect = await pool.getConnection();
+			rs = await connect.query(sql, values);
+			connect.release();
+		
+			res.redirect('/book/list');
+		}
 	}
 	catch(e) {
 		if(connect) connect.release();
