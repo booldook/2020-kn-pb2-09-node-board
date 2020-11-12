@@ -4,6 +4,7 @@ const moment = require('moment');
 const error = require('http-errors');
 const { pool } = require('../modules/mysql-conn');
 const { alert } = require('../modules/util');
+const { upload, allowExt } = require('../modules/multer-conn');
 
 router.get(['/', '/list'], async (req, res, next) => {
 	let connect, rs, sql, values, pug;
@@ -32,6 +33,7 @@ router.get('/write', (req, res, next) => {
 		file: 'book-write',
 		title: '도서 작성',
 		titleSub: '등록할 도서를 작성하세요.',
+		allowExt
 	}
 	res.render('book/write', pug);
 });
@@ -59,7 +61,8 @@ router.get('/write/:id', async (req, res, next) => {
 	}
 });
 
-router.post('/save', async (req, res, next) => {
+router.post('/save', upload.single('upfile'), async (req, res, next) => {
+	console.log(req.allow);
 	let connect, rs, sql, values, pug;
 	try {
 		const { title, writer, wdate, content } = req.body;

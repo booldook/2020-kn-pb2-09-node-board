@@ -2,10 +2,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const fs = require('fs');
-const moment = require('moment');
 const error = require('http-errors');
-const { upload } = require('./modules/multer-conn');
 
 /** 라우터 등록 **********************/
 const testRouter = require('./routes/test');
@@ -31,15 +28,6 @@ app.use('/', express.static(path.join(__dirname, './public')));
 app.use('/upload', express.static(path.join(__dirname, './storage')));
 app.use('/test', testRouter);
 app.use('/book', bookRouter);
-
-/** 멀터-임시 **********************/
-app.get('/multer', (req, res, next) => {
-	res.render('multer/write.pug');
-});
-
-app.post('/multer/save', upload.single('upfile'), (req, res, next) => {
-	res.json(req.body);
-});
 
 /** 에러 처리 **********************/
 app.use((req, res, next) => {

@@ -21,9 +21,11 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
 	let ext = path.extname(file.originalname).replace(".", "").toLowerCase();
 	if(allowExt.includes(ext)) {
+		req.allow = true;
 		cb(null, true);
 	}
 	else {
+		req.allow = false;
 		cb(null, false);
 	}
 }

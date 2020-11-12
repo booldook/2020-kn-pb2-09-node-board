@@ -1,6 +1,6 @@
 extends ../layout/lo-default.pug
 block content
-	form(name="bookForm" action=`${book ? '/book/change' : '/book/save'}` method="post")
+	form(name="bookForm" action=`${book ? '/book/change' : '/book/save'}` method="post" enctype="multipart/form-data")
 		input(type="hidden" name="id" value=`${book && book.id ? book.id : ''}`)
 		table.table.tb-write
 			tbody
@@ -19,6 +19,11 @@ block content
 					td.content
 						input.form-control(type="date" name="wdate"
 						value=`${book && book.wdate ? book.wdate : ''}`)
+				tr
+					td.title 첨부파일
+					td.content
+						input.form-control-file(type="file" name="upfile")
+						.py-2.text-danger= `업로드 가능한 파일은 ${[...allowExt].join(', ')} 입니다.`
 				tr
 					td.title 내용
 					td.content
