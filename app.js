@@ -8,6 +8,8 @@ const error = require('http-errors');
 const { v4: uuidv4 } = require('uuid'); 
 
 const multer  = require('multer');
+const imgExt = ['jpg', 'jpeg', 'gif', 'png', 'svg'];
+const allowExt = [...imgExt, 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'hwp'];
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		var folder = path.join(__dirname, './storage', moment().format('YYMMDD'));
@@ -20,12 +22,20 @@ const storage = multer.diskStorage({
 		cb(null, name);
 	}
 });
-const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+	let ext = path.extname(file.originalname).replace(".", "").toLowerCase();
+	if(allowExt.includes(ext)) {
+		cb(null, true);
+	}
+	else {
+		cb(null, false);
+	}
+}
+const upload = multer({ storage, fileFilter, limits: { fileSize: 20480000 } });
 
 /** 라우터 등록 **********************/
 const testRouter = require('./routes/test');
 const bookRouter = require('./routes/book');
-const { SCHED_RR } = require('cluster');
 
 /** 서버실행 **********************/
 app.listen(3000, () => {
@@ -59,10 +69,6 @@ app.post('/multer/save', upload.single('upfile'), (req, res, next) => {
 
 /** 에러 처리 **********************/
 app.use((req, res, next) => {
-	/* const err = new Error();
-	err.img = 404;
-	err.code = 'Page Not Found';
-	err.error = '페이지를 찾을 수 없습니다.'; */
 	next(error(404, 'Page Not Found - 페이지를 찾을 수 없습니다.'));
 });
 
@@ -70,7 +76,7 @@ app.use((err, req, res, next) => {
 	const pug = {
 		img : err.status == 404 ? err.status : 500, 
 		code : err.status || 500,
-		msg	: err.message || 'UnExpected Error'
+		msg	: err.message || 'Unexpected Error'
 	}
 	res.render('error/error.pug', pug);
 });
