@@ -17,6 +17,8 @@ block content
 					td= v.writer
 					td= v.wdate
 					td.text-left= v.content
+						if v.icon
+							span.icon= v.icon
 					td
 						a(href=`javascript: onUpdate(${v.id});`)
 							i.fa.fa-edit

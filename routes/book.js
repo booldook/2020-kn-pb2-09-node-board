@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const moment = require('moment');
+const path = require('path');
 const error = require('http-errors');
 const { pool } = require('../modules/mysql-conn');
 const { alert } = require('../modules/util');
@@ -13,7 +14,10 @@ router.get(['/', '/list'], async (req, res, next) => {
 		connect = await pool.getConnection();
 		rs = await connect.query(sql);
 		connect.release();
-		for(let v of rs[0]) v.wdate = moment(v.wdate).format('YYYY-MM-DD');
+		for(let v of rs[0]) {
+			v.wdate = moment(v.wdate).format('YYYY-MM-DD');
+			if(v.savefile) v.icon = path.extname(v.savefile).replace('.', '').toUpperCase();
+		}
 		pug = {
 			file: 'book-list',
 			title: '도서 리스트',

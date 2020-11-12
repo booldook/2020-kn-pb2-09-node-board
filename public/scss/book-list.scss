@@ -1,7 +1,7 @@
 @use 'dim.scss';
 @use 'color.scss';
 
-.list-table tr {
+.list-table {
 	th:nth-child(1) {width: 10%; min-width: 60px;}
 	th:nth-child(2) {width: 20%; min-width: 120px;}
 	th:nth-child(3) {width: 12%; min-width: 100px;}
@@ -11,6 +11,7 @@
 		th:nth-child(1), th:nth-child(3), th:nth-child(4) {display: none;}
 		td:nth-child(1), td:nth-child(3), td:nth-child(4) {display: none;}
 	}
+	span.icon {display: inline-block; font-size: 0.75em; padding: 0 0.5em; background-color: color.$iconBg; color: color.$activeColor; border-radius: 4px; margin-left: 12px;}
 }
 
 
