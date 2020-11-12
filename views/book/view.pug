@@ -1,3 +1,26 @@
 extends ../layout/lo-default.pug
 block content
-	table.table
+	table.table.table-hover.border-bottom.view-table
+		tbody
+			tr
+				td.title 번호
+				td.content= book.id
+			tr
+				td.title 제목
+				td.content= book.title
+			tr
+				td.title 저자
+				td.content= book.writer
+			tr
+				td.title 발행일
+				td.content= book.wdate
+			if book.file
+				tr
+					td.title 첨부파일
+					td.content= book.realfile
+			tr
+				td.title 내용
+				td.content= book.content
+					if book.src
+						hr
+						img.mw-100(src=`${book.src}`)

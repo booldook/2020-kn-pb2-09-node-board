@@ -1,2 +1,7 @@
 @use 'color';
 @use 'dim';
+
+.view-table {
+	td.title {width: 20%; max-width: 120px; font-weight: bold; color: color.$middleColor; border-right: 1px solid color.$lighterColor;}
+	td.content {font-size: 1.125em;}
+}

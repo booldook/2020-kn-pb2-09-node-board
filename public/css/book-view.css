@@ -1,0 +1,10 @@
+.view-table td.title {
+  width: 20%;
+  max-width: 120px;
+  font-weight: bold;
+  color: #555;
+  border-right: 1px solid #dee2e6;
+}
+.view-table td.content {
+  font-size: 1.125em;
+}

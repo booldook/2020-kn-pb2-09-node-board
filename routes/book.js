@@ -5,7 +5,7 @@ const path = require('path');
 const error = require('http-errors');
 const { pool } = require('../modules/mysql-conn');
 const { alert } = require('../modules/util');
-const { upload, allowExt } = require('../modules/multer-conn');
+const { upload, allowExt, imgExt } = require('../modules/multer-conn');
 
 router.get(['/', '/list'], async (req, res, next) => {
 	let connect, rs, sql, values, pug;
@@ -128,13 +128,34 @@ router.post('/change', async (req, res, next) => {
 	}
 });
 
-router.get('/view/:id', (req, res, next) => {
-	let pug = {
-		file: 'book-view',
-		title: '도서 상세 보기',
-		titleSub: '도서의 내용을 보여줍니다.',
+router.get('/view/:id', async (req, res, next) => {
+	let connect, rs, sql, values, pug, book;
+	try {
+		sql = 'SELECT * FROM books WHERE id=' + req.params.id;
+		connect = await pool.getConnection();
+		rs = await connect.query(sql);
+		book = rs[0][0];
+		book.wdate = moment(book.wdate).format('YYYY-MM-DD');
+		if(book.savefile) {
+			book.file = `/upload/${book.savefile.substr(0, 6)}/${book.savefile}`;
+			if(imgExt.includes(path.extname(book.savefile).replace('.', ''))) {
+				//	/upload/201112/파일명
+				book.src = book.file;
+			}
+		}
+		pug = {
+			file: 'book-view',
+			title: '도서 상세 보기',
+			titleSub: '도서의 내용을 보여줍니다.',
+			book
+		}
+		console.log(book);
+		res.render('book/view', pug);
 	}
-	res.render('book/view', pug);
+	catch(e) {
+		if(connect) connect.release();
+		next(error(500, e.sqlMessage));
+	}
 });
 
 
