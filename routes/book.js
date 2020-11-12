@@ -55,7 +55,8 @@ router.get('/write/:id', async (req, res, next) => {
 			file: 'book-update',
 			title: '도서 수정',
 			titleSub: '수정할 도서 내용을 작성하세요.',
-			book: rs[0][0]
+			book: rs[0][0],
+			allowExt
 		}
 		res.render('book/write', pug);
 	}
@@ -111,7 +112,7 @@ router.get('/delete/:id', async (req, res, next) => {
 	}
 });
 
-router.post('/change', async (req, res, next) => {
+router.post('/change', upload.single('upfile'), async (req, res, next) => {
 	let connect, rs, sql, values, pug;
 	try {
 		var { title, writer, wdate, content, id } = req.body;
@@ -161,6 +162,11 @@ router.get('/view/:id', async (req, res, next) => {
 router.get('/download', (req, res, next) => {
 	let src = path.join(__dirname, '../storage', req.query.file.substr(0, 6), req.query.file);
 	res.download(src, req.query.name); 
+});
+
+router.get('/remove/:id', (req, res, next) => {
+	if(req.params.id) res.json({ code: 200 });
+	else res.json({ code: 500 });
 });
 
 module.exports = router;

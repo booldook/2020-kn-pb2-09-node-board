@@ -22,6 +22,10 @@ block content
 				tr
 					td.title 첨부파일
 					td.content
+						if book && book.savefile
+							.file-wrap.py-2= book.realfile
+								a.ml-2.bt-remove(href=`javascript:onRemove(${book.id})`)
+									i.fa.fa-times-circle
 						input.form-control-file(type="file" name="upfile")
 						.py-2.text-danger= `업로드 가능한 파일은 ${[...allowExt].join(', ')} 입니다.`
 				tr
