@@ -17,10 +17,15 @@ block content
 			if book.file
 				tr
 					td.title 첨부파일
-					td.content= book.realfile
+					td.content
+						a(href=`/book/download?file=${book.savefile}&name=${book.realfile}`)
+							i.fa.fa-download
+							span.ml-2= book.realfile
 			tr
 				td.title 내용
 				td.content= book.content
 					if book.src
 						hr
 						img.mw-100(src=`${book.src}`)
+	.mt-3.my-5.pb-5.text-center
+		a.btn.btn-info(href="/book") 리스트보기

@@ -134,11 +134,12 @@ router.get('/view/:id', async (req, res, next) => {
 		sql = 'SELECT * FROM books WHERE id=' + req.params.id;
 		connect = await pool.getConnection();
 		rs = await connect.query(sql);
+		connect.release();
 		book = rs[0][0];
 		book.wdate = moment(book.wdate).format('YYYY-MM-DD');
 		if(book.savefile) {
 			book.file = `/upload/${book.savefile.substr(0, 6)}/${book.savefile}`;
-			if(imgExt.includes(path.extname(book.savefile).replace('.', ''))) {
+			if(imgExt.includes(path.extname(book.savefile).replace('.', '').toLowerCase())) {
 				//	/upload/201112/파일명
 				book.src = book.file;
 			}
@@ -149,7 +150,6 @@ router.get('/view/:id', async (req, res, next) => {
 			titleSub: '도서의 내용을 보여줍니다.',
 			book
 		}
-		console.log(book);
 		res.render('book/view', pug);
 	}
 	catch(e) {
@@ -158,6 +158,10 @@ router.get('/view/:id', async (req, res, next) => {
 	}
 });
 
+router.get('/download', (req, res, next) => {
+	let src = path.join(__dirname, '../storage', req.query.file.substr(0, 6), req.query.file);
+	res.download(src, req.query.name); 
+});
 
 module.exports = router;
 
