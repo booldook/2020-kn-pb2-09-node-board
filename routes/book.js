@@ -128,6 +128,16 @@ router.post('/change', async (req, res, next) => {
 	}
 });
 
+router.get('/view/:id', (req, res, next) => {
+	let pug = {
+		file: 'book-view',
+		title: '도서 상세 보기',
+		titleSub: '도서의 내용을 보여줍니다.',
+	}
+	res.render('book/view', pug);
+});
+
+
 module.exports = router;
 
 
