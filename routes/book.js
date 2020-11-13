@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 const path = require('path');
+const fs = require('fs-extra');
 const error = require('http-errors');
 const { pool } = require('../modules/mysql-conn');
-const { alert } = require('../modules/util');
+const { alert, makePath } = require('../modules/util');
 const { upload, allowExt, imgExt } = require('../modules/multer-conn');
 
 router.get(['/', '/list'], async (req, res, next) => {
@@ -28,7 +29,7 @@ router.get(['/', '/list'], async (req, res, next) => {
 	}
 	catch(e) {
 		if(connect) connect.release();
-		next(error(500, e.sqlMessage));
+		next(error(500, e.sqlMessage || e));
 	}
 });
 
@@ -62,7 +63,7 @@ router.get('/write/:id', async (req, res, next) => {
 	}
 	catch(e) {
 		if(connect) connect.release();
-		next(error(500, e.sqlMessage));
+		next(error(500, e.sqlMessage || e));
 	}
 });
 
@@ -93,7 +94,7 @@ router.post('/save', upload.single('upfile'), async (req, res, next) => {
 	}
 	catch(e) {
 		if(connect) connect.release();
-		next(error(500, e.sqlMessage));
+		next(error(500, e.sqlMessage || e));
 	}
 });
 
@@ -108,7 +109,7 @@ router.get('/delete/:id', async (req, res, next) => {
 	}
 	catch(e) {
 		if(connect) connect.release();
-		next(error(500, e.sqlMessage));
+		next(error(500, e.sqlMessage || e));
 	}
 });
 
@@ -125,7 +126,7 @@ router.post('/change', upload.single('upfile'), async (req, res, next) => {
 	}
 	catch(e) {
 		if(connect) connect.release();
-		next(error(500, e.sqlMessage));
+		next(error(500, e.sqlMessage || e));
 	}
 });
 
@@ -155,7 +156,7 @@ router.get('/view/:id', async (req, res, next) => {
 	}
 	catch(e) {
 		if(connect) connect.release();
-		next(error(500, e.sqlMessage));
+		next(error(500, e.sqlMessage || e));
 	}
 });
 
@@ -164,12 +165,24 @@ router.get('/download', (req, res, next) => {
 	res.download(src, req.query.name); 
 });
 
-router.get('/remove/:id', (req, res, next) => {
-	if(req.params.id) res.json({ code: 200 });
-	else res.json({ code: 500 });
+router.get('/remove/:id', async (req, res, next) => {
+	let connect, sql, values, rs, pug;
+	try {
+		let filePath = path.join(__dirname, '../storage', filename.substr(0, 6), filename);
+		await fs.remove(file)
+	}
+	catch(e) {
+		if(connect) connect.release();
+		next(error(500, e.sqlMessage || e));
+	}
 });
 
 module.exports = router;
+
+
+// 첨부파일 경로
+// /upload/${book.savefile.substr(0, 6)}/${book.savefile}
+// path.join(__dirname, '../storage', filename.substr(0, 6), filename)
 
 
 
