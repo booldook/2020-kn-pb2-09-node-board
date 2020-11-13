@@ -11,4 +11,24 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-module.exports = { pool, mysql };
+const sqlGen = (mode, table, field, data, file) => {
+	let values = [], sql;
+	let temp = Object.entries(data).filter(v => field.includes(v[0]));
+	
+	if(mode == 'I') sql = 'INSERT INTO ' +table+ ' SET ';
+	else sql = 'UPDATE ' +table+ ' SET ';
+	
+	if(file) {
+		temp.push(['savefile', file.filename]); 
+		temp.push(['realfile', file.originalname]); 
+		temp.push(['filesize', file.size]); 
+	}
+	for(var v of temp) {
+		sql += v[0] + '=?,';
+		values.push(v[1]);
+	}
+	sql = sql.substr(0, sql.length - 1);
+	return { sql, values }
+}
+
+module.exports = { pool, mysql, sqlGen };

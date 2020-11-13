@@ -4,7 +4,7 @@ const moment = require('moment');
 const path = require('path');
 const fs = require('fs-extra');
 const error = require('http-errors');
-const { pool } = require('../modules/mysql-conn');
+const { pool, sqlGen } = require('../modules/mysql-conn');
 const { alert, getPath, getExt } = require('../modules/util');
 const { upload, allowExt, imgExt } = require('../modules/multer-conn');
 
@@ -67,20 +67,8 @@ router.get('/write/:id', async (req, res, next) => {
 	}
 });
 
-const sqlGen = (sql, file, values) => {
-	if(file) {
-		sql += ', realfile=?, savefile=?, filesize=?';
-		values.push(file.originalname);
-		values.push(file.filename);
-		values.push(file.size);
-	}
-	return { sql, values };
-}
-
 router.post('/save', upload.single('upfile'), async (req, res, next) => {
-	let connect, rs, sql, values, pug;
-	let { title, writer, wdate, content } = req.body;
-	values = [title, writer, wdate, content];
+	let connect, rs, pug, sql, values;
 	try {
 		if(req.allow == false) {
 			// 파일을 올렸으나 거부당했을때..
@@ -88,12 +76,10 @@ router.post('/save', upload.single('upfile'), async (req, res, next) => {
 		}
 		else {
 			// 파일을 올리지 않았거나, 올렸거나
-			sql = 'INSERT INTO books SET title=?, writer=?, wdate=?, content=?';
-			let { sql: sql2, values: values2 } = sqlGen(sql, req.file, values);
 			connect = await pool.getConnection();
-			rs = await connect.query(sql2, values2);
+			let obj = sqlGen('I', 'books', ['title', 'writer', 'content', 'wdate'], req.body, req.file);
+			rs = await connect.query(obj.sql, obj.values);
 			connect.release();
-		
 			res.redirect('/book/list');
 		}
 	}
@@ -123,9 +109,7 @@ router.get('/delete/:id', async (req, res, next) => {
 });
 
 router.post('/change', upload.single('upfile'), async (req, res, next) => {
-	let connect, rs, sql, values, pug;
-	let { title, writer, wdate, content, id } = req.body;
-	values = [title, writer, wdate, content];
+	let connect, rs, pug, sql, values;
 	try {
 		if(req.allow == false) {
 			res.send(alert(`${req.ext} 는 업로드 할 수 없습니다.`, '/book'));
@@ -133,14 +117,13 @@ router.post('/change', upload.single('upfile'), async (req, res, next) => {
 		else {
 			connect = await pool.getConnection();
 			if(req.file) {
-				sql = 'SELECT savefile FROM books WHERE id='+id;
+				sql = 'SELECT savefile FROM books WHERE id='+req.body.id;
 				rs = await connect.query(sql);
 				if(rs[0][0].savefile) await fs.remove(getPath(rs[0][0].savefile));
 			}
-			sql = 'UPDATE books SET title=?, writer=?, wdate=?, content=?';
-			let { sql: sql2, values: values2 } = sqlGen(sql, req.file, values);
-			sql2 += ' WHERE id='+id;
-			rs = await connect.query(sql2, values2);
+			let obj = sqlGen('U', 'books', ["title", "wdate", "writer", "content"], req.body, req.file);
+			obj.sql += ' WHERE id='+req.body.id;
+			rs = await connect.query(obj.sql, obj.values);
 			connect.release();
 			res.send(alert(rs[0].affectedRows>0 ? '수정되었습니다.' : '수정에 실패하였습니다.', '/book'));
 		}
