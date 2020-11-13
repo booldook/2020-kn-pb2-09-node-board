@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const error = require('http-errors');
 const { pool } = require('../modules/mysql-conn');
-const { alert, makePath } = require('../modules/util');
+const { alert, getPath, getExt } = require('../modules/util');
 const { upload, allowExt, imgExt } = require('../modules/multer-conn');
 
 router.get(['/', '/list'], async (req, res, next) => {
@@ -17,7 +17,7 @@ router.get(['/', '/list'], async (req, res, next) => {
 		connect.release();
 		for(let v of rs[0]) {
 			v.wdate = moment(v.wdate).format('YYYY-MM-DD');
-			if(v.savefile) v.icon = path.extname(v.savefile).replace('.', '').toUpperCase();
+			if(v.savefile) v.icon = getExt(v.savefile, 'upper');
 		}
 		pug = {
 			file: 'book-list',
@@ -105,6 +105,7 @@ router.get('/delete/:id', async (req, res, next) => {
 		sql = `DELETE FROM books WHERE id=${req.params.id}`;
 		connect = await pool.getConnection();
 		rs = await connect.query(sql);
+		connect.release();
 		res.send(alert(rs[0].affectedRows>0 ? '삭제되었습니다.' : '삭제에 실패하였습니다.', '/book'));
 	}
 	catch(e) {
@@ -140,8 +141,8 @@ router.get('/view/:id', async (req, res, next) => {
 		book = rs[0][0];
 		book.wdate = moment(book.wdate).format('YYYY-MM-DD');
 		if(book.savefile) {
-			book.file = `/upload/${book.savefile.substr(0, 6)}/${book.savefile}`;
-			if(imgExt.includes(path.extname(book.savefile).replace('.', '').toLowerCase())) {
+			book.file = getPath(book.savefile, 'rel');
+			if(imgExt.includes(getExt(book.savefile))) {
 				//	/upload/201112/파일명
 				book.src = book.file;
 			}
@@ -161,19 +162,25 @@ router.get('/view/:id', async (req, res, next) => {
 });
 
 router.get('/download', (req, res, next) => {
-	let src = path.join(__dirname, '../storage', req.query.file.substr(0, 6), req.query.file);
+	let src = getPath(req.query.file);
 	res.download(src, req.query.name); 
 });
 
 router.get('/remove/:id', async (req, res, next) => {
 	let connect, sql, values, rs, pug;
 	try {
-		let filePath = path.join(__dirname, '../storage', filename.substr(0, 6), filename);
-		await fs.remove(file)
+		sql = 'SELECT savefile FROM books WHERE id='+req.params.id;
+		connect = await pool.getConnection();
+		rs = await connect.query(sql);
+		await fs.remove(getPath(rs[0][0].savefile));
+		sql = 'UPDATE books SET savefile=NULL, realfile=NULL, filesize=NULL WHERE id='+req.params.id;
+		rs = await connect.query(sql);
+		connect.release();
+		res.json({ code: 200 });
 	}
 	catch(e) {
 		if(connect) connect.release();
-		next(error(500, e.sqlMessage || e));
+		res.json({ code: 500, error: e });
 	}
 });
 

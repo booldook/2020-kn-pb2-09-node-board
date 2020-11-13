@@ -1,6 +1,7 @@
 function onRemove(id) {
 	if(confirm('첨부파일을 삭제하시겠습니까? 삭제후에는 복구되지 않습니다!')) {
 		$.get('/book/remove/'+id, function(r) {
+			console.log(r);
 			if(r.code == 200) {
 				$(".file-wrap").remove();
 			}
