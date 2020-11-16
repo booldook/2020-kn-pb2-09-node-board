@@ -12,7 +12,7 @@ const pool = mysql.createPool({
 });
 
 const sqlGen = (table, mode, obj) => {
-	let { field=[], data={}, file=null, id=null, order=null, limit=null } = obj;
+	let { field=[], data={}, file=null, id=null, order=null, limit=[] } = obj;
 	let sql=null, values=[];
 	let temp = Object.entries(data).filter(v => field.includes(v[0]));
 	
@@ -28,7 +28,7 @@ const sqlGen = (table, mode, obj) => {
 		sql = `SELECT ${field.length == 0 ? '*' : field.toString()} FROM ${table} `;
 		if(id) sql += ` id=${id} `;
 		if(order) sql += ` ${order} `;
-		if(limit && limit.st && limit.cnt) sql += ` LIMIT ${limit.st}, ${limit.cnt} `;
+		if(limit.length == 2) sql += ` LIMIT ${limit[0]}, ${limit[1]} `;
 	}
 
 	if(file) {

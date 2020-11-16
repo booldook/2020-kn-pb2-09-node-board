@@ -9,9 +9,10 @@ const { alert, getPath, getExt } = require('../modules/util');
 const { upload, allowExt, imgExt } = require('../modules/multer-conn');
 
 router.get(['/', '/list'], async (req, res, next) => {
-	let connect, rs, sql, values, pug;
+	let connect, rs, pug;
 	try {
-		sql = 'SELECT * FROM books ORDER BY id DESC LIMIT 0, 5';
+		// sql = 'SELECT * FROM books ORDER BY id DESC LIMIT 0, 5';
+		let { sql, values } = sqlGen('books', 'S', {limit: [0, 3]});
 		connect = await pool.getConnection();
 		rs = await connect.query(sql);
 		connect.release();
