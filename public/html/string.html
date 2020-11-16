@@ -1,4 +1,5 @@
 <script>
+
 let field = ['title', 'writer', 'content'];
 let table = 'board';
 let data = {title: 'A', writer: 'B', content: 'C', id: 1};
@@ -6,27 +7,27 @@ let file = {filename: '1111.jpg', originalname: 'abc.jpg', size: 14400};
 console.log( Object.entries(data) );
 
 
-	const sqlGen = (mode, table, field, data, file) => {
-		let values = [], sql;
-		let temp = Object.entries(data).filter(v => field.includes(v[0]));
-		
-		if(mode == 'I') sql = 'INSERT INTO ' +table+ ' SET ';
-		else sql = 'UPDATE ' +table+ ' SET ';
-		
-		if(file) {
-			temp.push(['savefile', file.filename]); 
-			temp.push(['realfile', file.originalname]); 
-			temp.push(['filesize', file.size]); 
-		}
-		for(var v of temp) {
-			sql += v[0] + '=?,';
-			values.push(v[1]);
-		}
-		sql = sql.substr(0, sql.length - 1);
-		return {sql, values}
-	}
-
+const sqlGen = (mode, table, field, data, file) => {
+	let values = [], sql;
+	let temp = Object.entries(data).filter(v => field.includes(v[0]));
 	
-	console.log(sqlGen('I', table, field, data, file));
-	console.log(sqlGen('U', table, field, data, file));
+	if(mode == 'I') sql = 'INSERT INTO ' +table+ ' SET ';
+	else sql = 'UPDATE ' +table+ ' SET ';
+	
+	if(file) {
+		temp.push(['savefile', file.filename]); 
+		temp.push(['realfile', file.originalname]); 
+		temp.push(['filesize', file.size]); 
+	}
+	for(var v of temp) {
+		sql += v[0] + '=?,';
+		values.push(v[1]);
+	}
+	sql = sql.substr(0, sql.length - 1);
+	return {sql, values}
+}
+
+
+console.log(sqlGen('I', table, field, data, file));
+console.log(sqlGen('U', table, field, data, file));
 </script>

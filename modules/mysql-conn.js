@@ -11,13 +11,26 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-const sqlGen = (mode, table, field, data, file) => {
-	let values = [], sql;
+const sqlGen = (table, mode, obj) => {
+	let { field=[], data={}, file=null, id=null, order=null, limit=null } = obj;
+	let sql=null, values=[];
 	let temp = Object.entries(data).filter(v => field.includes(v[0]));
 	
-	if(mode == 'I') sql = 'INSERT INTO ' +table+ ' SET ';
-	else sql = 'UPDATE ' +table+ ' SET ';
-	
+	if(mode == 'I') sql = `INSERT INTO ${table} SET `;
+	if(model == 'U') sql = `UPDATE ${table} SET `;
+	if(model == 'D') sql = `DELETE FROM ${table} WHERE id=${id} `;
+	if(model == 'S') {
+		// SELECT * FROM books
+		// SELECT title, writer FROM books
+		// SELECT * FROM books WHERE id=3
+		// SELECT * FROM books WHERE id=3 ORDER BY id DESC
+		// SELECT * FROM books WHERE id=3 ORDER BY id DESC LIMIT 0, 3
+		sql = `SELECT ${field.length == 0 ? '*' : field.toString()} FROM ${table} `;
+		if(id) sql += ` id=${id} `;
+		if(order) sql += ` ${order} `;
+		if(limit && limit.st && limit.cnt) sql += ` LIMIT ${limit.st}, ${limit.cnt} `;
+	}
+
 	if(file) {
 		temp.push(['savefile', file.filename]); 
 		temp.push(['realfile', file.originalname]); 
