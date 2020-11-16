@@ -17,16 +17,16 @@ const sqlGen = (table, mode, obj) => {
 	let temp = Object.entries(data).filter(v => field.includes(v[0]));
 	
 	if(mode == 'I') sql = `INSERT INTO ${table} SET `;
-	if(model == 'U') sql = `UPDATE ${table} SET `;
-	if(model == 'D') sql = `DELETE FROM ${table} WHERE id=${id} `;
-	if(model == 'S') {
+	if(mode == 'U') sql = `UPDATE ${table} SET `;
+	if(mode == 'D') sql = `DELETE FROM ${table} WHERE id=${id} `;
+	if(mode == 'S') {
 		// SELECT * FROM books
 		// SELECT title, writer FROM books
 		// SELECT * FROM books WHERE id=3
 		// SELECT * FROM books WHERE id=3 ORDER BY id DESC
 		// SELECT * FROM books WHERE id=3 ORDER BY id DESC LIMIT 0, 3
 		sql = `SELECT ${field.length == 0 ? '*' : field.toString()} FROM ${table} `;
-		if(id) sql += ` id=${id} `;
+		if(id) sql += ` WHERE id=${id} `;
 		if(order) sql += ` ${order} `;
 		if(limit.length == 2) sql += ` LIMIT ${limit[0]}, ${limit[1]} `;
 	}
@@ -41,6 +41,7 @@ const sqlGen = (table, mode, obj) => {
 		values.push(v[1]);
 	}
 	sql = sql.substr(0, sql.length - 1);
+	if(mode == 'U' && id) sql += ` WHERE id=${id} `;
 	return { sql, values }
 }
 
