@@ -11,7 +11,9 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-const sqlGen = (table, mode, obj) => {
+// let field= ['title', 'writer'];
+// Object.entries({title: "제", writer: "자", wdate: "11-16"}).filter(v => field.includes(v[0]));
+const sqlGen = async (table, mode, obj) => {
 	let { field=[], data={}, file=null, id=null, order=null, limit=[] } = obj;
 	let sql=null, values=[];
 	let temp = Object.entries(data).filter(v => field.includes(v[0]));
@@ -42,7 +44,12 @@ const sqlGen = (table, mode, obj) => {
 	}
 	sql = sql.substr(0, sql.length - 1);
 	if(mode == 'U' && id) sql += ` WHERE id=${id} `;
-	return { sql, values }
+
+	let connect = await pool.getConnection();
+	let rs = await connect.query(sql, values); 
+	connect.release();
+	
+	return rs;
 }
 
 module.exports = { pool, mysql, sqlGen };
