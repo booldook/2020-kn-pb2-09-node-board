@@ -115,7 +115,7 @@ router.post('/change', upload.single('upfile'), async (req, res, next) => {
 				rs = sqlGen('books', 'S', {id: req.body.id, field: ['savefile']});
 				if(rs[0][0].savefile) await fs.remove(getPath(rs[0][0].savefile));
 			}
-			var rs = sqlGen('books', 'U', {
+			rs = sqlGen('books', 'U', {
 				field: ["title", "wdate", "writer", "content"], 
 				data: req.body, 
 				file: req.file,
