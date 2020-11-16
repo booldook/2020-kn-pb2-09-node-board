@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const error = require('http-errors');
 const { pool, sqlGen } = require('../modules/mysql-conn');
-const { alert, getPath, getExt } = require('../modules/util');
+const { alert, getPath, getExt, txtCut } = require('../modules/util');
 const { upload, allowExt, imgExt } = require('../modules/multer-conn');
 
 router.get(['/', '/list'], async (req, res, next) => {
@@ -16,6 +16,7 @@ router.get(['/', '/list'], async (req, res, next) => {
 		for(let v of rs[0]) {
 			v.wdate = moment(v.wdate).format('YYYY-MM-DD');
 			if(v.savefile) v.icon = getExt(v.savefile, 'upper');
+			v.content = txtCut(v.content);
 		}
 		pug = {
 			file: 'book-list',

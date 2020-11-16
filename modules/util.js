@@ -6,4 +6,6 @@ const getPath = (filename, mode='abs') => mode === 'abs' ? path.join(__dirname, 
 
 const getExt = (filename, mode='lower') => mode == 'lower' ? path.extname(filename).replace('.', '').toLowerCase() : path.extname(filename).replace('.', '').toUpperCase();
 
-module.exports = { alert, getPath, getExt };
+const txtCut = v => v.length > 20 ? v.substr(0, 20) + '...' : v;
+
+module.exports = { alert, getPath, getExt, txtCut };
