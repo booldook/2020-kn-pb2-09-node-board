@@ -1,18 +1,18 @@
 /** 전역변수 **********************/
-require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
 const error = require('http-errors');
+const session = require('express-session');
+
 
 /** 라우터 등록 **********************/
-const testRouter = require('./routes/test');
-const bookRouter = require('./routes/book');
+
 
 /** 서버실행 **********************/
-app.listen(process.env.PORT, () => {
+app.listen(3000, () => {
 	console.log('=====================');
-	console.log('http://127.0.0.1:'+process.env.PORT);
+	console.log('http://127.0.0.1:3000');
 	console.log('=====================');
 });
 
@@ -24,11 +24,17 @@ app.locals.pretty = true;
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
+// app.set('trust proxy', 1);
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: true }
+}))
+
 /** 라우터설정 **********************/
 app.use('/', express.static(path.join(__dirname, './public')));
-app.use('/upload', express.static(path.join(__dirname, './storage')));
-app.use('/test', testRouter);
-app.use('/book', bookRouter);
+
 
 /** 에러 처리 **********************/
 app.use((req, res, next) => {
