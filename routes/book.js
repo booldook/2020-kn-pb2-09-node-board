@@ -12,11 +12,11 @@ const pager = require('../modules/pager-conn');
 router.get(['/', '/list', '/list/:page'], async (req, res, next) => {
 	let connect, rs, pug;
 	let page = req.params.page || 1, totalRecord ;
+	req.app.locals.page = page;
 	try {
 		rs = await sqlGen('books', 'S', {field: ['count(id)']});
 		totalRecord = rs[0][0]['count(id)'];
-		let pagers = pager(page, totalRecord, {listCnt: 2, pagerCnt: 4});
-		console.log(pagers);
+		let pagers = pager(page, totalRecord);
 		// SELECT * FROM books ORDER BY id DESC LIMIT startIdx, listCnt
 		rs = await sqlGen('books', 'S', {order: 'ORDER BY id DESC', limit: [pagers.startIdx, pagers.listCnt]});
 		for(let v of rs[0]) {
@@ -138,6 +138,7 @@ router.post('/change', upload.single('upfile'), async (req, res, next) => {
 });
 
 router.get('/view/:id', async (req, res, next) => {
+	console.log(res.locals.page);
 	let connect, rs, pug, book;
 	try {
 		// sql = 'SELECT * FROM books WHERE id=' + req.params.id;
@@ -155,7 +156,8 @@ router.get('/view/:id', async (req, res, next) => {
 			file: 'book-view',
 			title: '도서 상세 보기',
 			titleSub: '도서의 내용을 보여줍니다.',
-			book
+			book,
+			page: req.app.locals.page
 		}
 		res.render('book/view', pug);
 	}

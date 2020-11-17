@@ -28,4 +28,6 @@ block content
 						hr
 						img.mw-100(src=`${book.src}`)
 	.mt-3.my-5.pb-5.text-center
-		a.btn.btn-info(href="/book") 리스트보기
+		a.btn.btn-success.mr-2(href=`javascript: onUpdate(${book.id})`) 수정
+		a.btn.btn-danger.mr-5(href=`javascript: onDelete(${book.id})`) 삭제
+		a.btn.btn-info(href=`/book/list/${page || 1}`) 리스트보기

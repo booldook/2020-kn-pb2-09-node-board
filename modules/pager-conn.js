@@ -1,6 +1,6 @@
 const pager = (page, totalRecord, obj) => {
 	page = Number(page);
-	let { listCnt = 5, pagerCnt = 3 } = obj || {};
+	let { listCnt = 5, pagerCnt = 5 } = obj || {};
 	let totalPage = Math.ceil(totalRecord / listCnt);
 	let startIdx = (page - 1) * listCnt;
 	let lastPage = page < totalPage ? totalPage : 0;
