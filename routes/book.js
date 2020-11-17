@@ -15,7 +15,7 @@ router.get(['/', '/list', '/list/:page'], async (req, res, next) => {
 	try {
 		rs = await sqlGen('books', 'S', {field: ['count(id)']});
 		totalRecord = rs[0][0]['count(id)'];
-		let pagers = pager(page, totalRecord, {listCnt: 3});
+		let pagers = pager(page, totalRecord, {listCnt: 2, pagerCnt: 5});
 
 		// SELECT * FROM books ORDER BY id DESC LIMIT startIdx, listCnt
 		rs = await sqlGen('books', 'S', {order: 'ORDER BY id DESC', limit: [pagers.startIdx, pagers.listCnt]});
