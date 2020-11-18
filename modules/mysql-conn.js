@@ -31,13 +31,17 @@ const pool = mysql.createPool({
 
 const sqlGen = async (table, mode, obj) => {
 	let { field=[], data={}, file=null, where=null, order=[], limit=[]  } = obj;
-	let sql=null, values=[];
+	let sql=null, values=[], connect=null, rs=null;
 	let temp = Object.entries(data).filter(v => field.includes(v[0]));
 	
-	if(mode == 'I') sql = `INSERT INTO ${table} SET `;
-	if(mode == 'U') sql = `UPDATE ${table} SET `;
-	if(mode == 'D') sql = `DELETE FROM ${table} `;
-	if(mode == 'S') sql = `SELECT ${field.length == 0 ? '*' : field.toString()} FROM ${table} `;
+	if(mode == 'I' || mode == 'i') 
+		sql = `INSERT INTO ${table} SET `;
+	if(mode == 'U' || mode == 'u') 
+		sql = `UPDATE ${table} SET `;
+	if(mode == 'D' || mode == 'd') 
+		sql = `DELETE FROM ${table} `;
+	if(mode == 'S' || mode == 's') 
+		sql = `SELECT ${field.length == 0 ? '*' : field.toString()} FROM ${table} `;
 
 	if(file) {
 		temp.push(['savefile', file.filename]); 
@@ -71,11 +75,17 @@ const sqlGen = async (table, mode, obj) => {
 	if((mode == 'D' || mode == 'U') && sql.indexOf('WHERE') == -1) {
 		throw new Error('수정, 삭제는 where절이 필요합니다.');
 	}
-	let connect = await pool.getConnection();
-	let rs = await connect.query(sql, values); 
-	connect.release();
-	
-	return rs;
+	console.log(sql);
+	try {
+		connect = await pool.getConnection();
+		rs = await connect.query(sql, values); 
+		connect.release();
+		return rs;
+	}
+	catch(e) {
+		if(connect) connect.release();
+		throw new Error(e);
+	}
 }
 
 module.exports = { pool, mysql, sqlGen };

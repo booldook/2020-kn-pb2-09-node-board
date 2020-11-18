@@ -12,8 +12,18 @@ router.get('/join', (req, res, next) => {
 })
 
 
-router.get('/idchk/:userid', (req, res, next) => {
-
+router.get('/idchk/:userid', async (req, res, next) => {
+	let rs;
+	try {
+		rs = await sqlGen('users', 'S', {where: ['userid', req.params.userid]});
+		if(rs[0].length > 0)
+			res.json({ code: 200, isUsed: true });
+		else
+			res.json({ code: 200, isUsed: false });
+	}
+	catch(e) {
+		res.json({code: 500, error: e.sqlMessage || e});
+	}
 });
 
 module.exports = router;
