@@ -8,6 +8,7 @@ const error = require('http-errors');
 /** 라우터 등록 **********************/
 const testRouter = require('./routes/test');
 const bookRouter = require('./routes/book');
+const userRouter = require('./routes/user');
 
 /** 서버실행 **********************/
 app.listen(process.env.PORT, () => {
@@ -29,6 +30,7 @@ app.use('/', express.static(path.join(__dirname, './public')));
 app.use('/upload', express.static(path.join(__dirname, './storage')));
 app.use('/test', testRouter);
 app.use('/book', bookRouter);
+app.use('/user', userRouter);
 
 /** 에러 처리 **********************/
 app.use((req, res, next) => {

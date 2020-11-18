@@ -1,0 +1,12 @@
+.table .title {
+  width: 20%;
+  min-width: 120px;
+  padding-left: 1em;
+  font-weight: bold;
+}
+.table input {
+  max-width: 200px;
+}
+.table input[name=email] {
+  max-width: 600px;
+}
