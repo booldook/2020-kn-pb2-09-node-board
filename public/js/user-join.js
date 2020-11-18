@@ -8,6 +8,21 @@ function onSubmit(f) {
 		f.userid.focus();
 		return false;
 	}
+	if(validUserpw == "") {
+		$(f.userpw).next().removeClass('active').text('패스워드를 확인하세요.');
+		f.userpw.focus();
+		return false;
+	}
+	if(validUsername == "") {
+		$(f.username).next().removeClass('active').text('이름을 확인하세요.');
+		f.username.focus();
+		return false;
+	}
+	if(validEmail == "") {
+		$(f.email).next().removeClass('active').text('이메일을 확인하세요.');
+		f.email.focus();
+		return false;
+	}
 	return true;
 }
 
@@ -67,6 +82,25 @@ function onBlurName() {
 	}
 }
 
+function onBlurEmail() {
+	var $email = $('input[name="email"]');
+	var email = $email.val().trim();
+	var $validEmail = $("input[name='validEmail']");
+	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	if(email == "" || email.match(regExp) == null){
+		$email.next().removeClass('active').text('이메일을 올바르게 입력하세요.');
+		$validEmail.val("");
+		return false;
+	}
+	else {
+		$email.next().addClass('active').text('사용하실 수 있습니다.');
+		$validEmail.val("valid");
+		return true;
+	}
+}
+
+
 $("input[name='userid']").on('blur', onBlur);
 $("input[name='userpw']").on('blur', onBlurPass);
 $("input[name='username']").on('blur', onBlurName);
+$("input[name='email']").on('keyup', onBlurEmail);
