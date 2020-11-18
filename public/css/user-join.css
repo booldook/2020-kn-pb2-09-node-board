@@ -17,3 +17,6 @@
   padding-top: 0.25em;
   color: #af0202;
 }
+.table .content .valid.active {
+  color: #023085;
+}

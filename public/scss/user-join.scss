@@ -8,14 +8,9 @@
 		font-weight: bold;
 	}
 	.content {
-		input {
-			max-width: 200px;
-		}
-		input[name="email"] {
-			max-width: 600px;
-		}
-		.valid {
-			padding-top: 0.25em; color: #af0202;
-		}
+		input {max-width: 200px;}
+		input[name="email"] {	max-width: 600px;}
+		.valid {padding-top: 0.25em; color: #af0202;}
+		.valid.active {color: #023085;}
 	}
 }

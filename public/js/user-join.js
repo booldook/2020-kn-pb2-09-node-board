@@ -1,6 +1,10 @@
 function onSubmit(f) {
-	if(f.userid.value == '') {
-		$(f.userid).next().text('아이디를 입력하세요.');
+	var $validUserid = $("input[name='validUserid']");
+	var $validUserpw = $("input[name='validUserpw']");
+	var $validUsername = $("input[name='validUsername']");
+	var $validEmail = $("input[name='validEmail']");
+	if(!$validUserid.val()) {
+		$(f.userid).next().removeClass('active').text('아이디를 확인하세요.');
 		f.userid.focus();
 		return false;
 	}
@@ -8,20 +12,31 @@ function onSubmit(f) {
 }
 
 function onBlur() {
-	console.log($(this).val());
-	$.get('/user/idchk/'+$(this).val(), function(v) {
+	var $userid = $(this);
+	var userid = $userid.val().trim();
+	var $validUserid = $("input[name='validUserid']");
+	function onRes(v) {
 		if(v.code == 200) {
-			if(v.isUsed) {
-				$("input[name='userid']").next().text('사용할 수 없는 아이디 입니다.');
+			if(v.isUsed){
+				$userid.next().removeClass('active').text('사용할 수 없는 아이디 입니다.');
+				$validUserid.val(false);
 			}
-			else {
-				$("input[name='userid']").next().text('멋진 아이디 입니다. 사용하세요!');
+			else{
+				$userid.next().addClass('active').text('멋진 아이디 입니다. 사용하세요!');
+				$validUserpw.val(true);
 			}
 		}
 		else {
 			console.log(v);
+			$validUserid.val(false);
 		}
-	});
+	}
+	if(userid.length < 8 || userid.length > 24){
+		$userid.next().removeClass('active').text('아이디는 8자 이상 24자 이하로 생성하셔야 합니다.');
+		$validUserid.val(false);
+	}
+	else 
+		$.get('/user/idchk/'+userid, onRes);
 } 
 
 $("input[name='userid']").on('blur', onBlur);

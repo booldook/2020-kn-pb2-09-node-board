@@ -2,6 +2,10 @@ extends ../layout/lo-default.pug
 
 block content
 	form(name='joinForm' action='/user/save' method='post' onsubmit="return onSubmit(this);")
+		input(type="hidden" name="validUserid" value="false")
+		input(type="hidden" name="validUserpw" value="false")
+		input(type="hidden" name="validUsername" value="false")
+		input(type="hidden" name="validEmail" value="false")
 		table.table.border-bottom
 			tbody
 				tr
