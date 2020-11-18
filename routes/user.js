@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { pool, sqlGen } = require('../modules/mysql-conn');
 
 router.get('/join', (req, res, next) => {
 	const pug = { 
@@ -9,5 +10,10 @@ router.get('/join', (req, res, next) => {
 	}
 	res.render('user/join', pug);
 })
+
+
+router.get('/idchk/:userid', (req, res, next) => {
+
+});
 
 module.exports = router;
