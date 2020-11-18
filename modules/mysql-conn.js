@@ -56,13 +56,13 @@ const sqlGen = async (table, mode, obj) => {
 			sql += ` WHERE ${where[0]} = '${where[1]}' `;
 	}
 	if(where && where.op && where.fields && (where.op.toUpperCase() == 'AND' || where.op.toUpperCase() == 'OR')) {
-		for(let i in fields) {
+		for(let i in where.fields) {
 			if(i == 0) sql += ` WHERE `;
 			else sql += ` ${where.op} `;
-			if(fields[i][2] && fields[i][2].toUpperCase() == 'LIKE')
-				sql += ` ${fields[i][0]} LIKE '%${fields[i][1]}%' `;
+			if(where.fields[i][2] && where.fields[i][2].toUpperCase() == 'LIKE')
+				sql += ` ${where.fields[i][0]} LIKE '%${where.fields[i][1]}%' `;
 			else
-				sql += ` ${fields[i][0]} = '${fields[i][1]}' `;
+				sql += ` ${where.fields[i][0]} = '${where.fields[i][1]}' `;
 		}
 	}
 	if(order.length > 1) sql += ` ORDER BY ${order[0]} ${order[1]} `;

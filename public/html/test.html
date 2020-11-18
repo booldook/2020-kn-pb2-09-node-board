@@ -1,0 +1,23 @@
+<script>
+	let { where=null, sql='' } = {where: {
+			op: 'and', fields:[['userid', 'booldook', 'like'], ['userpw', '000000']]
+		}
+	};
+	if(Array.isArray(where)) {
+		if(where[2] && where[2].toUpperCase() == 'LIKE')
+			sql += ` WHERE ${where[0]} LIKE '%${where[1]}%' `;
+		else
+			sql += ` WHERE ${where[0]} = '${where[1]}' `;
+	}
+	if(where && where.op && where.fields && (where.op.toUpperCase() == 'AND' || where.op.toUpperCase() == 'OR')) {
+		for(let i in where.fields) {
+			if(i == 0) sql += ` WHERE `;
+			else sql += ` ${where.op} `;
+			if(where.fields[i][2] && where.fields[i][2].toUpperCase() == 'LIKE')
+				sql += ` ${where.fields[i][0]} LIKE '%${where.fields[i][1]}%' `;
+			else
+				sql += ` ${where.fields[i][0]} = '${where.fields[i][1]}' `;
+		}
+	}
+	console.log(sql);
+</script>
