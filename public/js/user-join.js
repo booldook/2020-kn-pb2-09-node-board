@@ -39,4 +39,34 @@ function onBlur() {
 		$.get('/user/idchk/'+userid, onRes);
 } 
 
+function onBlurPass() {
+	var $userpw = $(this);
+	var userpw = $userpw.val().trim();
+	var $validUserpw = $("input[name='validUserpw']");
+	if(userpw.length < 8 || userpw.length > 24){
+		$userpw.next().removeClass('active').text('패스워드는 8자 이상 24자 이하로 생성하셔야 합니다.');
+		$validUserpw.val("");
+	}
+	else {
+		$userpw.next().addClass('active').text('사용하실 수 있습니다.');
+		$validUserpw.val("valid");
+	}
+}
+
+function onBlurName() {
+	var $username = $(this);
+	var username = $username.val().trim();
+	var $validUsername = $("input[name='validUsername']");
+	if(username == ""){
+		$username.next().removeClass('active').text('이름을 입력하세요.');
+		$validUsername.val("");
+	}
+	else {
+		$username.next().addClass('active').text('사용하실 수 있습니다.');
+		$validUsername.val("valid");
+	}
+}
+
 $("input[name='userid']").on('blur', onBlur);
+$("input[name='userpw']").on('blur', onBlurPass);
+$("input[name='username']").on('blur', onBlurName);
