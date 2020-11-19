@@ -5,6 +5,8 @@ const app = express();
 const path = require('path');
 const error = require('http-errors');
 const session = require('express-session');
+const MysqlStore = require('express-mysql-session')(session);
+const mySession = require('./modules/session-conn');
 
 /** 라우터 등록 **********************/
 const testRouter = require('./routes/test');
@@ -25,12 +27,7 @@ app.locals.pretty = true;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(session({
-	secret: process.env.SESSION_SALT,
-	resave: false,
-	saveUninitialized: true,
-	cookie: { secure: false }
-}));
+app.use(session(mySession(MysqlStore)));
 
 
 /** 라우터설정 **********************/

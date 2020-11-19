@@ -64,6 +64,11 @@ router.post('/logon', async (req, res, next) => {
 	}
 });
 
+router.get('/logout', (req, res, next) => {
+	req.session.destroy();
+	res.send(alert('로그아웃 되었습니다.', '/'));
+});
+
 router.get('/idchk/:userid', async (req, res, next) => {
 	let rs;
 	try {
