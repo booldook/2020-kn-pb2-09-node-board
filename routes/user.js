@@ -31,6 +31,26 @@ router.post('/save', async (req, res, next) => {
 	}
 });
 
+router.get('/login', (req, res, next) => {
+	const pug = { 
+		file: 'user-login', 
+		title: '회원 로그인',
+		titleSub: '회원 로그인 후 서비스를 이용하세요~'
+	}
+	res.render('user/login', pug);
+});
+
+router.post('/logon', async (req, res, next) => {
+	try {
+		let rs = await sqlGen('users', 'S', {
+			field: ['userid'], where:['userid', req.body.userid]
+		});
+		res.json(rs[0]);
+	}
+	catch(e) {
+		next(error(500, e.sqlMessage || e));
+	}
+});
 
 router.get('/idchk/:userid', async (req, res, next) => {
 	let rs;

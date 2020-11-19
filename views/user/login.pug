@@ -1,0 +1,24 @@
+extends ../layout/lo-default.pug
+block content
+	form(name='loginForm' method='post' action='/user/logon' onsubmit='return onSubmit(this);')
+		table.table.tb-login
+			tbody
+				tr
+					td.title 아이디
+					td.content
+						input.form-control(type="text" name="userid" placeholder="아이디")
+				tr.border-bottom
+					td.title 패스워드
+					td.content
+						input.form-control(type="password" name="userpw" placeholder="패스워드")
+		.text-center.pb-3
+			button.btn.btn-primary
+				i.fa.fa-key.mr-3
+				span 로그인
+		.text-center.py-3.border-top
+			button.btn.btn-info.ml-3(type="button" onclick=`location.href='/user/join';`)
+				i.fa.fa-user.mr-3
+				span 회원가입
+			button.btn.btn-warning(type="button" onclick=`location.href='/user/kakao';`)
+				i.fa.fa-comment.mr-3
+				span 카카오 로그인

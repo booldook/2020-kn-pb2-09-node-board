@@ -1,0 +1,15 @@
+form[name=loginForm] {
+  width: 90%;
+  max-width: 500px;
+  margin: 2em auto;
+  border: 1px solid #dee2e6;
+  padding: 2em;
+  border-radius: 8px;
+}
+form[name=loginForm] td {
+  vertical-align: middle;
+}
+form[name=loginForm] .title {
+  font-weight: bold;
+  padding-left: 1em;
+}
