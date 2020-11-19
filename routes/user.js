@@ -3,6 +3,7 @@ const router = express.Router();
 const error = require('http-errors');
 const bcrypt = require('bcrypt');
 const { pool, sqlGen } = require('../modules/mysql-conn');
+const { alert } = require('../modules/util');
 
 router.get('/join', (req, res, next) => {
 	const pug = { 
@@ -20,7 +21,10 @@ router.post('/save', async (req, res, next) => {
 			field: ['userid', 'userpw', 'username', 'email'],
 			data: req.body
 		});
-		res.json(rs[0]);
+		if(rs[0].affectedRows == 1) 
+			res.send(alert('회원가입이 완료되었습니다. 로그인 해 주세요.', '/user/login'));
+		else
+			res.send(alert('회원가입이 실패하였습니다. 다시 시도해 주세요.', '/user/join'));
 	}
 	catch(e) {
 		next(error(500, e.sqlMessage || e));
