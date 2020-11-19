@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const error = require('http-errors');
+const bcrypt = require('bcrypt');
 const { pool, sqlGen } = require('../modules/mysql-conn');
 
 router.get('/join', (req, res, next) => {
@@ -9,7 +11,21 @@ router.get('/join', (req, res, next) => {
 		titleSub: '다양한 혜택을 위해 회원에 가입하세요~'
 	}
 	res.render('user/join', pug);
-})
+});
+
+router.post('/save', async (req, res, next) => {
+	try {
+		req.body.userpw = await bcrypt.hash(req.body.userpw + process.env.BCRYPT_SALT, Number(process.env.BCRYPT_ROUND));
+		let rs = await sqlGen('users', 'I', {
+			field: ['userid', 'userpw', 'username', 'email'],
+			data: req.body
+		});
+		res.json(rs[0]);
+	}
+	catch(e) {
+		next(error(500, e.sqlMessage || e));
+	}
+});
 
 
 router.get('/idchk/:userid', async (req, res, next) => {

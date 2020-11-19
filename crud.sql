@@ -12,9 +12,10 @@
 -- Pager 쿼리
 -- SELECT * FROM books ORDER BY id DESC;
 -- 1page 쿼리
-SELECT * FROM books ORDER BY id DESC LIMIT 3, 3;
-
-
+-- SELECT * FROM books ORDER BY id DESC LIMIT 3, 3;
+-- INSERT INTO users SET userid='booldook',userpw='0000',username='임덕규',email='booldook@gmail.com';
+-- SELECT * FROM users WHERE userid='booldook';
+SELECT * FROM users WHERE userid LIKE '%bool%';
 
 
 
