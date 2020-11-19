@@ -1,4 +1,4 @@
-const pager = (page, totalRecord, obj) => {
+module.exports = (page, totalRecord, obj) => {
 	page = Number(page);
 	let { listCnt = 5, pagerCnt = 5 } = obj || {};
 	let totalPage = Math.ceil(totalRecord / listCnt);
@@ -13,5 +13,3 @@ const pager = (page, totalRecord, obj) => {
 	let firstPage = 1;
 	return { page, totalRecord, listCnt, pagerCnt, totalPage, startIdx, startPage, endPage, nextPage, prevPage, nextPager, prevPager, firstPage, lastPage };
 }
-
-module.exports = pager;
