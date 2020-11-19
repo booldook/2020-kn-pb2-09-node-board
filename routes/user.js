@@ -42,15 +42,22 @@ router.get('/login', (req, res, next) => {
 
 router.post('/logon', async (req, res, next) => {
 	try {
+		let msg = '아이디 또는 패스워드가 올바르지 않습니다.';
 		let rs = await sqlGen('users', 'S', { where:['userid', req.body.userid] });
 		if(rs[0].length > 0) {
 			let compare = await bcrypt.compare(req.body.userpw + process.env.BCRYPT_SALT, rs[0][0].userpw);
 			if(compare) {
+				// 세션처리
+				req.session.user = {
+					userid: rs[0][0].userid,
+					username: rs[0][0].username,
+					email: rs[0][0].email
+				}
 				res.send(alert('로그인 되었습니다', '/book'));
 			}
-			else res.send(alert('패스워드가 일치하지 않습니다.', '/user/login'));
+			else res.send(alert(msg, '/user/login'));
 		}
-		else res.send(alert('아이디가 없습니다.', '/user/login'));
+		else res.send(alert(msg, '/user/login'));
 	}
 	catch(e) {
 		next(error(500, e.sqlMessage || e));
