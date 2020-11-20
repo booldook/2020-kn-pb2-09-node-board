@@ -1,0 +1,41 @@
+{
+	"editor.fontSize": 28,
+	"editor.fontFamily": "D2coding",
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"editor.wordWrap": "on",
+	"workbench.iconTheme": "material-icon-theme",
+	"window.zoomLevel": 1,
+	"editor.renderControlCharacters": true,
+	"editor.renderWhitespace": "all",
+	"terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
+	"terminal.integrated.fontSize": 30,
+	"terminal.integrated.fontFamily": "D2coding",
+	"git.enableSmartCommit": true,
+	"git.autofetch": true,
+	"editor.dragAndDrop": false,
+	"editor.minimap.enabled": false,
+	"liveServer.settings.donotShowInfoMsg": true,
+	"workbench.colorTheme": "Default Light+",
+	"workbench.startupEditor": "newUntitledFile",
+	"tabnine.experimentalAutoImports": true,
+	"screencastMode.onlyKeyboardShortcuts": true,
+	"workbench.editorAssociations": [
+			{
+					"viewType": "imagePreview.previewEditor",
+					"filenamePattern": "*.png"
+			}
+	],
+	"liveServer.settings.donotVerifyTags": true,
+	"compile-hero.less-output-directory": "../css",
+	"compile-hero.scss-output-directory": "../css",
+	"compile-hero.sass-output-directory": "../css",
+	"compile-hero.jade-output-directory": "../html",
+	"compile-hero.pug-output-directory": "../html",
+	"compile-hero.pug-output-toggle": false,
+	"explorer.compactFolders": false,
+	"compile-hero.jade-output-toggle": false,
+	"compile-hero.javascript-output-toggle": false,
+	"explorer.confirmDelete": false,
+	"editor.codeActionsOnSave": null
+}
