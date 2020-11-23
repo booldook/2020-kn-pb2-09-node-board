@@ -86,8 +86,9 @@ router.post('/save', isUser, upload.single('upfile'), async (req, res, next) => 
 		}
 		else {
 			// 파일을 올리지 않았거나, 올렸거나
+			req.body.uid = req.session.user && req.session.user.id ? req.session.user.id : null;
 			let rs = await sqlGen('books', 'I', {
-				field: ['title', 'writer', 'content', 'wdate'], 
+				field: ['title', 'writer', 'content', 'wdate', 'uid'],
 				data: req.body, 
 				file: req.file
 			});
