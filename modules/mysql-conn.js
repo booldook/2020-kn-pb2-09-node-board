@@ -76,6 +76,7 @@ const sqlGen = async (table, mode, obj) => {
 		throw new Error('수정, 삭제는 where절이 필요합니다.');
 	}
 	console.log(sql);
+	console.log(values);
 	try {
 		connect = await pool.getConnection();
 		rs = await connect.query(sql, values); 
