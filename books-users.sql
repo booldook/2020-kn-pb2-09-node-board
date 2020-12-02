@@ -9,9 +9,7 @@ CREATE TABLE IF NOT EXISTS `books` (
   `realfile` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `filesize` int DEFAULT NULL,
   `uid` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`),
-  CONSTRAINT `FK_books_users` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -23,7 +21,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `wdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `level` tinyint NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
